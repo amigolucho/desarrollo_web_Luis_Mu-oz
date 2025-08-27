@@ -1,0 +1,87 @@
+:root {
+    --black-color: #000022;
+    --background-color: #e6c6c6;
+    --pink-color: #FC2865;
+}
+
+body {
+    margin: 0;
+    background-color: var(--background-color);
+}
+
+/* NAV BAR STUFF */
+
+.navbar {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    border: .2em solid var(--black-color);
+    border-radius: .25em;
+    margin: 1em 1em 2em 1em;
+    box-shadow: .3em .3em 0px 0px black;
+}
+
+.navbar > * {
+    color: var(--black-color);
+    font-family: "Roboto", sans-serif;
+}
+
+.navbar a {
+    position: relative;
+    text-decoration: none;
+    margin: 0 4.6cm;
+    padding: .250em;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.navbar-page::after{
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 0.175em;
+    background: var(--black-color);
+    left: 0;
+    bottom: 0;
+    transform: scale(0, 1);
+    transition: transform 0.3s ease;
+}
+
+
+.navbar-page:hover::after {
+    transform: scale(1, 1);
+}
+/*----------------------------------*/
+.content-table {
+    margin-top: 5dvh;
+    font-family: sans-serif;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 0.9em;
+    min-width: 400px;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.content-table thead tr {
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+}
+
+.content-table th,
+.content-table td {
+    padding: 12px 15px;
+}
+
+.content-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.content-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
