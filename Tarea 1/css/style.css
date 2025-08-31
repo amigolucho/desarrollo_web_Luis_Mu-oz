@@ -67,10 +67,9 @@ body {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
-.content-table thead tr {
-    color: #ffffff;
-    text-align: left;
-    font-weight: bold;
+td > img {
+    aspect-ratio: 1;
+    width: 10dvw;
 }
 
 .content-table th,
@@ -84,4 +83,14 @@ body {
 
 .content-table tbody tr:nth-of-type(even) {
     background-color: #f3f3f3;
+}
+
+.stats {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stats > * {
+    width: 720px;
 }
