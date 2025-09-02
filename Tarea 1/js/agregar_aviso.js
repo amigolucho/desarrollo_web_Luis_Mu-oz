@@ -1,17 +1,8 @@
 /* Validación Lugar */
-
 const validadorSelect = (select) => select;
 
-const validarLugar = (lugar) => {
-    let region = lugar["region"].value;
-    let comuna = lugar["comuna"].value;
-    let sector = lugar["sector"].value;
-
-    return validadorSelect(region) && validadorSelect(comuna) && validadorSelect(sector); //hacer que devuelva un bool?
-}
 
 /* Validación contacto */
-
 const validatorName = (name) => {
     return name && name.trim().length > 2 && name.trim().length <= 200; 
 }
@@ -25,22 +16,8 @@ const validatorPhone = (phone) => {
 const validatorChanel = (chanel) => {
     return 1 && chanel.trim().length > 3 && chanel.trim().length <= 50;
 }
-
-const validarContacto = (contacto) => {
-    let name = contacto["name"].value;
-    let email = contacto["email"].value;
-    let phone = contacto["phone"].value;
-    let chanel = contacto["chanel"].value;
-
-    return  validatorName(name) && validatorMail(email) && validatorPhone(phone) && validatorChanel(chanel)
-}
-
 /* Validación Mascota */
-
-const validatorInt = (int) => {
-    
-}
-
+const validatorInt = (int) => Number.isInteger(Number(int)) && 0 < Number(int) && Number(int)
 const validadorPhotos = (files) => {
     if (!files) return false;
     let lengthValid = 1 <= files.length && files.length <= 5;
@@ -48,20 +25,53 @@ const validadorPhotos = (files) => {
   };
 
 const validarAviso = () => {
-    let aviso = document.getElementById("aviso"); // formulatio
-    let validLugar = validarLugar(aviso);
-    let validContacto = validarContacto(aviso)
+    let aviso = document.getElementById("aviso"); // formulario
 
+    let region = aviso["region"].value;
+    let comuna = aviso["comuna"].value;
+    let sector = aviso["sector"].value;
+    let name = aviso["name"].value;
+    let email = aviso["email"].value;
+    let phone = aviso["phone"].value;
+    let chanel = aviso["chanel"].value;
 
+    let invalidInputs = [];
+    let isValid = true;
 
-    if (!validContacto) {
-        console.log(false);
-    }else {
-        console.log(true);
+    const setInvalidInput = (input) => {
+        invalidInputs.push(input);
+        isValid &&= false;
     }
 
-    let a = document.getElementById("a");
-    a.innerHTML = "aaaa";
+    if (!validadorSelect(region)) {
+        setInvalidInput("Región")
+    }
+    if (!validadorSelect(comuna)) {
+        setInvalidInput("Comuna")
+    }
+    if (!validadorSelect(sector)) {
+        setInvalidInput("Sector")
+    }
+    if (!validatorName(name)) {
+        setInvalidInput("Nombre Contacto")
+    }
+    if (!validatorMail(email)) {
+        setInvalidInput("Email")
+    }
+    if (!validatorPhone(phone)) {
+        setInvalidInput("Teléfono")
+    }
+    if (!validatorChanel(chanel)) {
+        setInvalidInput("Canal")
+    }
+
+    
+
+    if (!isValid) {
+        console.log(invalidInputs);
+    }else {
+        console.log(invalidInputs);
+    }
 }
 
 let addBtn = document.getElementById("add-aviso");

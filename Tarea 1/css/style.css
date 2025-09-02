@@ -89,7 +89,7 @@ td > img {
 .content-table tbody tr:nth-of-type(even) {
     background-color: #f3f3f3;
 }
-.content-table tr{
+#table-1 tr{
     cursor: pointer;
 }
 
