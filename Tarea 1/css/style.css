@@ -54,6 +54,11 @@ body {
     transform: scale(1, 1);
 }
 /*----------------------------------*/
+.title {
+    place-self: center;
+    font-family: sans-serif;
+}
+
 .content-table {
     margin-top: 5dvh;
     font-family: sans-serif;
@@ -84,6 +89,9 @@ td > img {
 .content-table tbody tr:nth-of-type(even) {
     background-color: #f3f3f3;
 }
+.content-table tr{
+    cursor: pointer;
+}
 
 .stats {
     display: flex;
@@ -93,4 +101,26 @@ td > img {
 
 .stats > * {
     width: 720px;
+}
+
+#home-btn {
+  width: 200px;
+  margin-bottom: 30px;
+  margin-top: 20px;
+  background-color: #4CAF50; 
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+#home-btn:hover {
+  background-color: #45a049;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0,0,0,0.15);
 }

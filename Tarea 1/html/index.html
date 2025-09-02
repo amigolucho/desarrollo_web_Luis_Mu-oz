@@ -8,17 +8,13 @@
     <link rel="stylesheet" type="text/css" href="../css/popout.css">
 </head>
 <body>
-    <div id="welcome-popup">
-      <div class="content">
-        <p>🎉 ¡Bienvenido a mi página! 🎉</p>
-        <button onclick="closePopup()">Cerrar</button>
-      </div>
-    </div>
     <div class="navbar">
         <a class="navbar-page" href="../html/agregar_aviso.html">Agregar aviso</a>
         <a class="navbar-page" href="../html/lista_avisos.html">Lista de adopciones</a>
         <a class="navbar-page" href="../html/estadisticas.html">Estadísticas</a>
     </div>
+    <h1 class="title">Bienvenido a Adopciones.cl</h1>
+    <p style="place-self: center; color:dimgray; font: 1.5em sans-serif;">Un lugar para ti y para ellos</p>
     <div>
         <table class="content-table">
             <tr>
@@ -41,23 +37,6 @@
             </tr>
         </table>
     </div>
-  <script>
-    // Mostrar el popup después de 1 segundo
-    window.onload = function() {
-      setTimeout(function() {
-        document.getElementById('welcome-popup').classList.add('show');
-      }, 1000);
-    };
-
-    // Cerrar popup manualmente
-    function closePopup() {
-      document.getElementById('welcome-popup').classList.remove('show');
-    }
-
-    // También puedes hacerlo desaparecer automáticamente después de 5 segundos
-    setTimeout(function() {
-      closePopup();
-    }, 6000);
-  </script>
+  <script src="../js/index.js"></script>
 </body>
 </html>

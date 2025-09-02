@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agregar aviso</title>
     <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <link rel="stylesheet" type="text/css" href="../css/agregar_avisos.css">
 </head>
 <body>
     <div class="navbar">
@@ -12,60 +13,58 @@
         <a class="navbar-page" href="../html/lista_avisos.html">Lista de adopciones</a>
         <a class="navbar-page" href="../html/estadisticas.html">Estadísticas</a>
     </div>
-
-    <form class="formulario" id=".." method="post" enctype="multipart/form-data">
-        <div>
+    <p id="a">oal</p>
+    <form class="formulario" id="aviso" method="post" enctype="multipart/form-data">
+        <div id="lugar">
+            <label for="region" class="obligatorio">Región</label>
+            <input id="region" name="region" type="text" class="grupo-input">
+            
+            <label for="comuna" class="obligatorio">Comuna</label>
+            <input id="comuna" type="text" name="comuna" class="grupo-input">
+            
             <label for="sector">Sector</label>
             <input id="sector" type="text" name="sector" class="grupo-input">
         </div>
         <p>Contacto</p>
-        <div>
-            <label for="name">Nombre</label>
+        <div id="contacto">
+            <label for="name" class="obligatorio">Nombre</label>
             <input id="name" type="text" name="name" class="grupo-input">
-        </div>
-        <div>
-            <label for="email">Email</label>
+
+            <label for="email" class="obligatorio">Email</label>
             <input id="email" type="text" name="email" class="grupo-input">
-        </div>
-        <div>
+
             <label for="phone">Número de Celular</label>
-            <input id="phone" type="text" name="phone" class="grupo-input">
-        </div>
-        <div>
+            <input id="phone" type="tel" name="phone" class="grupo-input">
+
             <label for="chanel">Contactar por</label>
             <input id="chanel" type="text" name="chanel" class="grupo-input">
         </div>
-        <p>MAscota</p>
+        <p>Mascota</p>
+        <div id="mascota"></div>
         <div>
-            <label for="type">Tipo</label>
+            <label for="type" class="obligatorio">Tipo</label>
             <input id="type" type="text" name="type" class="grupo-input">
-        </div>
-        <div>
-            <label for="name">Cantidad</label>
+
+            <label for="name" class="obligatorio">Cantidad</label>
+            <input id="name" type="number" name="name" class="grupo-input">
+
+            <label for="name" class="obligatorio">Edad</label>
+            <input id="name" type="number" name="name" class="grupo-input">
+
+            <label for="name" class="obligatorio">Unidad de medida edad</label>
             <input id="name" type="text" name="name" class="grupo-input">
-        </div>
-        <div>
-            <label for="name">Edad</label>
+
+            <label for="name" class="obligatorio">Fecha disponible para entrega</label>
             <input id="name" type="text" name="name" class="grupo-input">
-        </div>
-        <div>
-            <label for="name">Unidad de medida edad</label>
-            <input id="name" type="text" name="name" class="grupo-input">
-        </div>
-        <div>
-            <label for="name">Fecha disponible para entrega</label>
-            <input id="name" type="text" name="name" class="grupo-input">
-        </div>
-        <div>
+
             <label for="name">Descripción</label>
             <input id="name" type="text" name="name" class="grupo-input">
-        </div>
-        <div>
-            <label for="name">Foto</label>
+
+            <label for="name" class="obligatorio">Foto</label>
             <input id="name" type="text" name="name" class="grupo-input">
         </div>
-
     </form>
-    
+    <button id="add-aviso">Agregar este aviso de adopción</button>
 </body>
+<script src="../js/agregar_aviso.js"></script>
 </html>
