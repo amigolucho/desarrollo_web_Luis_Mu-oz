@@ -13,7 +13,6 @@
         <a class="navbar-page" href="../html/lista_avisos.html">Lista de adopciones</a>
         <a class="navbar-page" href="../html/estadisticas.html">Estadísticas</a>
     </div>
-    <p id="a">oal</p>
 <div class="formulario">
     <form id="aviso" method="post" enctype="multipart/form-data">
         <h1>Agrega tu aviso!</h1>
@@ -30,7 +29,7 @@
             </select>
             
             <label for="sector">Sector</label>
-            <input id="sector" type="text" name="sector" class="grupo-input">
+            <input id="sector" type="text" name="sector" class="grupo-input" size="100">
         </div>
         <h2>Contacto</h2>
         <div id="contacto">
@@ -38,13 +37,23 @@
             <input id="name" type="text" name="name" class="grupo-input">
 
             <label for="email" class="obligatorio">Email</label>
-            <input id="email" type="text" name="email" class="grupo-input">
+            <input id="email" type="email" name="email" class="grupo-input">
 
             <label for="phone">Número de Celular</label>
-            <input id="phone" type="tel" name="phone" class="grupo-input">
+            <input id="phone" type="tel" name="phone" class="grupo-input" placeholder="+123.12345678">
 
             <label for="chanel">Contactar por</label>
-            <input id="chanel" type="text" name="chanel" class="grupo-input">
+            <select name="chanel" id="chanel">
+                <option>Whatsapp</option>
+                <option>Telegram</option>
+                <option>X</option>
+                <option>Instagram</option>
+                <option>Tiktok</option>
+                <option>Otras</option>
+            </select>
+            <label>ID o URL</label>
+            <input id="chanel-input" type="text" class="grupo-input">
+
         </div>
         <h2>Mascota</h2>
         <div id="mascota"></div>
@@ -67,14 +76,14 @@
                 <option>Años</option>
             </select>
 
-            <label for="name" class="obligatorio">Fecha disponible para entrega</label>
-            <input id="name" type="datetime-local" name="name" class="grupo-input">
+            <label for="deliver" class="obligatorio">Fecha disponible para entrega</label>
+            <input id="deliver" type="datetime-local" name="deliver" class="grupo-input">
 
             <label for="description">Descripción</label>
-            <input id="description" type="text" name="description" class="grupo-input">
+            <textarea id="description" type="text" name="description" cols="50" rows="10" class="grupo-input"></textarea>
 
             <label for="photo" class="obligatorio">Foto</label>
-            <input id="photo" type="text" name="photo" class="grupo-input">
+            <input id="photo" type="file" name="photo" class="grupo-input">
         </div>
     </form>
     <button id="add-aviso">Agregar este aviso de adopción</button>
