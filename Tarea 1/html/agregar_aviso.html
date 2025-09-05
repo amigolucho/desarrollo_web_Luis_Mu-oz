@@ -87,7 +87,7 @@
             <input id="deliver" type="datetime-local" name="deliver" class="grupo-input">
 
             <label for="description">Descripción</label>
-            <textarea id="description" type="text" name="description" cols="50" rows="10" class="grupo-input"></textarea>
+            <textarea id="description" name="description" cols="50" rows="10" class="grupo-input"></textarea>
 
             <label for="photo" class="obligatorio">Foto</label>
             <div id="fotos-container" style="display: flex; flex-direction: column;">
@@ -101,17 +101,17 @@
     <button class="btn" id="not-confirm-btn" hidden>No, no estoy seguro, quiero volver al formulario</button>
     <button class="btn" id="home-btn" onclick="window.location.href = '../html/index.html';" hidden>Regresar a la página principal</button>
 </div>
-</body>
 <script src="../js/agregar_aviso.js"></script>
 <script src="../js/select.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
 <script>
-  // prellenado de la fecha
-  let fecha = dayjs().add(3, 'hour');
-  let valor = fecha.format("YYYY-MM-DDTHH:mm");
-
-  const fecha2 = document.getElementById("deliver");
-  fecha2.value = valor;
-  fecha2.min = valor;
+    // prellenado de la fecha
+    let fecha = dayjs().add(3, 'hour');
+    let valor = fecha.format("YYYY-MM-DDTHH:mm");
+    
+    const fecha2 = document.getElementById("deliver");
+    fecha2.value = valor;
+    fecha2.min = valor;
 </script>
+</body>
 </html>
