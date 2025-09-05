@@ -13,6 +13,10 @@
         <a class="navbar-page" href="../html/lista_avisos.html">Lista de adopciones</a>
         <a class="navbar-page" href="../html/estadisticas.html">Estadísticas</a>
     </div>
+    <div class="msg-box" id="msg-box" hidden>
+        <h2 id="msg-val">Secciones inválidas</h2>
+        <ul id="msg-list"></ul>
+    </div>
 <div class="formulario">
     <form id="aviso" method="post" enctype="multipart/form-data">
         <h1>Agrega tu aviso!</h1>
@@ -40,10 +44,11 @@
             <input id="email" type="email" name="email" class="grupo-input">
 
             <label for="phone">Número de Celular</label>
-            <input id="phone" type="tel" name="phone" class="grupo-input" placeholder="+123.12345678">
+            <input id="phone" type="tel" name="phone" class="grupo-input" placeholder="+123.12345678"> 
 
             <label for="chanel">Contactar por</label>
             <select name="chanel" id="chanel">
+                <option>Elige una opción</option>
                 <option>Whatsapp</option>
                 <option>Telegram</option>
                 <option>X</option>
@@ -51,8 +56,10 @@
                 <option>Tiktok</option>
                 <option>Otras</option>
             </select>
-            <label>ID o URL</label>
-            <input id="chanel-input" type="text" class="grupo-input">
+            <div id="chanel-input-div" style="display: none; flex-direction: column;">
+                <label>ID o URL</label>
+                <input id="chanel-input" type="text" class="grupo-input">
+            </div>
 
         </div>
         <h2>Mascota</h2>
@@ -83,12 +90,28 @@
             <textarea id="description" type="text" name="description" cols="50" rows="10" class="grupo-input"></textarea>
 
             <label for="photo" class="obligatorio">Foto</label>
-            <input id="photo" type="file" name="photo" class="grupo-input">
+            <div id="fotos-container" style="display: flex; flex-direction: column;">
+                <input id="photo" type="file" name="photo" class="grupo-input">
+            </div>
         </div>
     </form>
-    <button id="add-aviso">Agregar este aviso de adopción</button>
+    <button class="btn" id="agregar-foto" style="background-color: cadetblue; margin-left: 10px; font-size: 10px;">Agregar otra foto</button>
+    <button class="btn" id="add-aviso">Agregar este aviso de adopción</button>
+    <button class="btn" id="confirm-btn" hidden>Sí, estoy seguro</button>
+    <button class="btn" id="not-confirm-btn" hidden>No, no estoy seguro, quiero volver al formulario</button>
+    <button class="btn" id="home-btn" onclick="window.location.href = '../html/index.html';" hidden>Regresar a la página principal</button>
 </div>
 </body>
 <script src="../js/agregar_aviso.js"></script>
 <script src="../js/select.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+<script>
+  // prellenado de la fecha
+  let fecha = dayjs().add(3, 'hour');
+  let valor = fecha.format("YYYY-MM-DDTHH:mm");
+
+  const fecha2 = document.getElementById("deliver");
+  fecha2.value = valor;
+  fecha2.min = valor;
+</script>
 </html>

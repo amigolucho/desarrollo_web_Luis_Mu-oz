@@ -39,3 +39,25 @@ label.obligatorio::after {
   margin: 30px;
   margin-inline: 50px;
 }
+
+.msg-box {
+  background-color: #ffdddd;
+  border-left: 6px solid #f44336;
+  margin-bottom: 20px;
+  padding: 10px;
+  border-radius: 4px;
+  width: 500px;
+  place-self: center;
+}
+
+.msg-box h2 {
+  margin: 0 0 10px 0;
+  font-size: 18px;
+}
+
+.msg-list {
+  padding-left: 20px;
+  margin: 0;
+  list-style-type: disc;
+  color: #a94442;
+}

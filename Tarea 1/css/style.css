@@ -103,7 +103,7 @@ td > img {
     width: 720px;
 }
 
-#home-btn {
+.btn {
   width: 200px;
   margin-bottom: 30px;
   margin-top: 20px;
@@ -117,9 +117,10 @@ td > img {
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  place-self: center;
 }
 
-#home-btn:hover {
+.btn:hover {
   background-color: #45a049;
   transform: translateY(-2px);
   box-shadow: 0 6px 8px rgba(0,0,0,0.15);
