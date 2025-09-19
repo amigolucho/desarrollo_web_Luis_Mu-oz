@@ -1,9 +1,9 @@
 import pymysql
 import json
 
-DB_NAME = "confessions_db"
-DB_USERNAME = "dbadmin" #cc5002
-DB_PASSWORD = "dbadmin" #programacionweb
+DB_NAME = "tarea2"
+DB_USERNAME = "cc5002"
+DB_PASSWORD = "programacionweb"
 DB_HOST = "localhost"
 DB_PORT = 3306
 DB_CHARSET = "utf8"
@@ -25,70 +25,53 @@ def get_conn():
 	return conn
 
 # -- querys --
-
-def get_user_by_id(id):
+def get_adoptions():
 	conn = get_conn()
-	cursor = conn.cursor()
-	cursor.execute(QUERY_DICT["get_user_by_id"], (id,))
-	user = cursor.fetchone()
-	return user
+	cursor = conn.cursor()#foto
+	sql = "SELECT fecha_ingreso, comuna, sector, cantidad, tipo, edad FROM aviso_adopcion"
+	cursor.execute(sql)
+	avisos = cursor.fetchall()
+	return avisos
 
-def get_user_by_email(email):
+def get_5_adoptions():
 	conn = get_conn()
-	cursor = conn.cursor()
-	cursor.execute(QUERY_DICT["get_user_by_email"], (email,))
-	user = cursor.fetchone()
-	return user
+	cursor = conn.cursor()#foto
+	sql = "SELECT * FROM aviso_adopcion ORDER BY fecha_ingreso DESC LIMIT 5"
+	cursor.execute(sql)
+	avisos = cursor.fetchall()
+	return avisos
 
-def get_user_by_username(username):
-	conn = get_conn()
-	cursor = conn.cursor()
-	cursor.execute(QUERY_DICT["get_user_by_username"], (username,))
-	user = cursor.fetchone()
-	return user
+def getComunaId(comuna):
+  conn = get_conn()
+  sql = "SELECT id FROM comuna WHERE nombre=%s"
+  cursor = conn.cursor()
+  cursor.execute(sql, (comuna))
+  comunaId = cursor.fetchone()
+  return comunaId[0] 
 
-def create_user(username, password, email):
-	conn = get_conn()
-	cursor = conn.cursor()
-	cursor.execute(QUERY_DICT["create_user"], (username, password, email))
-	conn.commit()
-
-def get_confessions(page_size):
-	conn = get_conn()
-	cursor = conn.cursor()
-	cursor.execute(QUERY_DICT["get_confessions"], (page_size,))
-	confessions = cursor.fetchall()
-	return confessions
-
-def create_confession(conf_text, conf_img, user_id):
-	conn = get_conn()
-	cursor = conn.cursor()
-	cursor.execute(QUERY_DICT["create_confession"], (conf_text, conf_img, user_id))
-	conn.commit()
+def getComuna(comunaId):
+  conn = get_conn()
+  sql = "SELECT nombre FROM comuna WHERE id=%s"
+  cursor = conn.cursor()
+  cursor.execute(sql, (comunaId))
+  comunaId = cursor.fetchone()
+  return comunaId[0] 
 	
 
 # -- db-related functions --
 
-def register_user(username, password, email):
-	# 1. check the email is not in use
-	_email_user = get_user_by_email(email)
-	if _email_user is not None:
-		return False, "El correo ya esta en uso."
-	# 2. check the username is not in use
-	_username_user = get_user_by_username(username)
-	if _username_user is not None:
-		return False, "El nombre de usuario esta en uso."
-	# 3. create user
-	create_user(username, password, email)
-	return True, None
+def add_adoption(fechaI, comuna, sector, nombre, mail, phone, type, cuantity, age, medida, fechaE, desc):
+	conn = get_conn()
+	cursor = conn.cursor()
+	sql = "INSET INTO aviso_adopcion (fecha_ingreso, comuna_id, sector, nombre, email, celular, tipo, cantidad, edad, unidad_medida, fecha_entrega, descripcion) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+	comuna_id = getComunaId(comuna)
+	cursor.execute(sql, (fechaI, comuna_id, sector, nombre, mail, phone, type, cuantity, age, medida, fechaE, desc))
+	conn.commit()
+	# mensaje verificación?
 
-def login_user(username, password):
-	a_user = get_user_by_username(username)
-	if a_user is None:
-		return False, "Usuario o contraseña incorrectos."
-
-	a_user_passwd = a_user[3]
-	if a_user_passwd != password:
-		return False, "Usuario o contraseña incorrectos."
-	return True, None
-
+def addContact(chanel, chanel_input, id):
+	conn = get_conn()
+	cursor = conn.cursor()
+	sql = "INSERT INTO contactar_por (nombre, identificador) values (%s, %s)"
+	cursor.execute(sql, (chanel, chanel_input))
+	conn.commit()

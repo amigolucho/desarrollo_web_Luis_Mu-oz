@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}Estadísticas{% endblock %}
+
+{% block content %}
+    <div class="stats">
+        <img src="{{ url_for('static', filename='src/grafico_lineas.png')}}" alt="graf1">
+        <img src="{{ url_for('static', filename='src/grafico_torta.png')}}" alt="graf2">
+        <img src="{{ url_for('static', filename='src/grafico_barras.png')}}" alt="graf3">
+        <button class="btn" id="home-btn" onclick="window.location.href = '/';">Regresar a la página principal</button>
+{% endblock %}

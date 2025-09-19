@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Información de aviso</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/info_aviso.css">
+</head>
+<body>
+    <div class="navbar">
+        <a class="navbar-page" href="../html/agregar_aviso.html">Agregar aviso</a>
+        <a class="navbar-page" href="../html/lista_avisos.html">Lista de adopciones</a>
+        <a class="navbar-page" href="../html/estadisticas.html">Estadísticas</a>
+    </div>
+    <div class="display-info">
+        <h1>Información del lugar</h1>
+        <p>Comuna: Ñuñoa</p>
+        <p>Sector: Plaza</p>
+        <h1>Información del contacto</h1>
+        <p>Nombre: Rodrigo Cárdenas</p>
+        <p>Email: rcardenas@gmail.com</p>
+        <h1>Información de la(s) mascota(s)</h1>
+        <p>Tipo/Cantidad/Edad: 1 perro 2 años</p>
+        <p>Fecha de Publicación: 2025-03-11</p> 
+        <p>Fecha de entrega: 2025-03-19</p>
+        <img src="../src/perro-2.jpg" alt="perro-2" class="thumbnail" onclick="openModal(this)">
+        <button class="btn" id="home-btn" onclick="window.location.href = '../html/index.html';">Regresar a la página principal</button>
+    </div>
+    <div id="imageModal" class="modal">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <img class="modal-content" id="expandedImg" src="a" alt="modal">
+            </div>
+    <script src="../js/info_aviso.js"></script>
+</body>
+</html>

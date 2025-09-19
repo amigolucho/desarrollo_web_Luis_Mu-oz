@@ -9,124 +9,95 @@ import os
 UPLOAD_FOLDER = 'static/uploads'
 
 app = Flask(__name__)
-
-
-app.secret_key = "s3cr3t_k3y"
+app.secret_key = "secret_key"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-# app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
 
-# --- Auth Routes ---
-@app.route("/register", methods=["GET", "POST"])
-def register():
-    if request.method == "POST":
-        username = request.form.get("username")
-        password = request.form.get("contrasenna")
-        email = request.form.get("email")
-        error = ""
-        if validate_register_user(username, password, email):
-            # try to register user
-            status, msg = db.register_user(username, password, email)
-            if status:
-                # set user field in session
-                session["user"] = username
-                return redirect(url_for("index"))
-            error += msg
-        else:
-            error += "Uno de los campos no es valido."
-
-        return render_template("auth/register.html", error=error)
-    
-    elif request.method == "GET":
-        if session.get("user", None):
-            return redirect(url_for("index"))
-        else:
-            return render_template("auth/register.html")
-
-
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    if request.method == "POST":
-        username = request.form.get("username")
-        password = request.form.get("contrasenna")
-        error = ""
-        if validate_login_user(username, password):
-            # try to login
-            status, msg = db.login_user(username, password)
-            if status:
-                # set user field in session
-                session["user"] = username
-                return redirect(url_for("index"))
-            error += msg
-        else:
-            error += "Uno de los campos no es valido."
-
-        print(error)
-
-        return render_template("auth/login.html",error=error)
-    
-    elif request.method == "GET":
-        if session.get("user", None):
-            return redirect(url_for("index"))
-        else:
-            return render_template("auth/login.html")
-
-@app.route("/logout", methods=["GET"])
-def logout():
-    session.pop("user", None)
-    return redirect(url_for("login"))
-
-
-
-# --- Routes ---
 @app.route("/", methods=["GET"])
 def index():
-    user = session.get("user", None)
-    if not user:
-        return redirect(url_for("login"))
-    
-    # get last confessions 
-    data = []
-    for conf in db.get_confessions(page_size=3):
-        _, conf_text, conf_img, user_id = conf
-        _, username, _, _ = db.get_user_by_id(user_id)
+    avisos = []
+    for aviso in db.get_5_adoptions():
+        _, fechaI, comunaId, sector, _, _, _, type, cuantity, age, medida, _, _ = aviso
         
-        ### CHECKPOINT 
-
-        img_filename = f"uploads/{conf_img}"
-        data.append({
-            "author": username,
-            "content": conf_text,
-            "path_image": url_for('static', filename=img_filename)
+        #Pasar de la info del db a lo que se muestra
+        comuna = db.getComuna(comunaId)
+        if sector == 'None': sector = "No especificado"
+        if medida == 'a':
+            medida = 'años'
+        else:
+            medida = 'meses'
+        avisos.append({
+            "fecha": fechaI,
+            "comuna": comuna,
+            "sector": sector,
+            "cantidad": cuantity,
+            "tipo": type,
+            "edad": age,
+            "medida": medida
         })
     
-    return render_template("confessions/confessions.html", data=data)
+    return render_template("tables/index.html", avisos=avisos)
 
-@app.route("/post-conf", methods=["POST"])
-def post_conf():
-    username = session.get("user", None)
-    if username is None:
-        return redirect(url_for("login"))
+@app.route("/agregar-aviso", methods=["GET", "POST"])
+#poner metodo post para postear el formulario
+def agregar_aviso():
+    if request.method == "GET":
+        return render_template("avisos/agregar_aviso.html")
+    
+    fechaI = "2024-09-10 09:24:28"
+    comuna = request.form.get("comuna")
+    sector = request.form.get("sector")
+    name = request.form.get("name")
+    email = request.form.get("email")
+    phone = request.form.get("phone")
+    type = request.form.get("type")
+    cuantity = request.form.get("cantidad")
+    age = request.form.get("age")
+    medida = request.form.get("medida")
+    fechaE = request.form.get("deliver")
+    desc = request.form.get("description")
+    #-------------------------------------------
+    chanel = request.form.get("chanel")
+    if chanel != None: 
+        chanel_input = request.form.get("description")
+        db.addContact(chanel, chanel_input, 1)
+    #-------------------------------------------
+    photos = request.form.get("fotos-container")
+    # validar aqui?
 
-    conf_text = request.form.get("conf-text")
-    conf_img = request.files.get("conf-img")
+    db.add_adoption(fechaI, comuna, sector, name, email, phone, type, cuantity, age, medida, fechaE, desc)
+    render_template("tables/index.html")
 
-    if validate_confession(conf_text, conf_img):
-        # 1. generate random name for img
-        _filename = hashlib.sha256(
-            secure_filename(conf_img.filename) # nombre del archivo
-            .encode("utf-8") # encodear a bytes
-            ).hexdigest()
-        _extension = filetype.guess(conf_img).extension
-        img_filename = f"{_filename}.{_extension}"
+@app.route("/avisos", methods=["GET"])
+def avisos():
+    avisos = []
+    for aviso in db.get_adoptions():
+        _, fechaI, comunaId, sector, _, _, _, type, cuantity, age, medida, _, _ = aviso
+        
+        #Pasar de la info del db a lo que se muestra
+        comuna = db.getComuna(comunaId)
+        if sector == 'None': sector = "No especificado"
+        if medida == 'a':
+            medida = 'años'
+        else:
+            medida = 'meses'
+        avisos.append({
+            "fecha": fechaI,
+            "comuna": comuna,
+            "sector": sector,
+            "cantidad": cuantity,
+            "tipo": type,
+            "edad": age,
+            "medida": medida
+        })
+    
 
-        # 2. save img as a file
-        conf_img.save(os.path.join(app.config["UPLOAD_FOLDER"], img_filename))
+    return render_template("avisos/lista_avisos.html", avisos=avisos)
 
-        # 3. save confession in db
-        user_id, _, _, _ = db.get_user_by_username(username)
-        db.create_confession(conf_text, img_filename, user_id)
+@app.route("/estadisticas", methods=["GET"])
+def estadisticas():
+    return render_template("estadisticas.html")
 
-    return redirect(url_for("index"))
+
 
 
 if __name__ == "__main__":
