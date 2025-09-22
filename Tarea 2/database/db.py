@@ -36,7 +36,7 @@ def get_adoptions():
 def get_5_adoptions():
 	conn = get_conn()
 	cursor = conn.cursor()#foto
-	sql = "SELECT * FROM aviso_adopcion ORDER BY fecha_ingreso DESC LIMIT 5"
+	sql = "SELECT * FROM aviso_adopcion ORDER BY fecha_ingreso DESC LIMIT 5;"
 	cursor.execute(sql)
 	avisos = cursor.fetchall()
 	return avisos
@@ -51,7 +51,7 @@ def getComunaId(comuna):
 
 def getComuna(comunaId):
   conn = get_conn()
-  sql = "SELECT nombre FROM comuna WHERE id=%s"
+  sql = "SELECT nombre FROM comuna WHERE id=%s;"
   cursor = conn.cursor()
   cursor.execute(sql, (comunaId))
   comunaId = cursor.fetchone()
@@ -63,7 +63,7 @@ def getComuna(comunaId):
 def add_adoption(fechaI, comuna, sector, nombre, mail, phone, type, cuantity, age, medida, fechaE, desc):
 	conn = get_conn()
 	cursor = conn.cursor()
-	sql = "INSET INTO aviso_adopcion (fecha_ingreso, comuna_id, sector, nombre, email, celular, tipo, cantidad, edad, unidad_medida, fecha_entrega, descripcion) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+	sql = "INSERT INTO aviso_adopcion (fecha_ingreso, comuna_id, sector, nombre, email, celular, tipo, cantidad, edad, unidad_medida, fecha_entrega, descripcion) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
 	comuna_id = getComunaId(comuna)
 	cursor.execute(sql, (fechaI, comuna_id, sector, nombre, mail, phone, type, cuantity, age, medida, fechaE, desc))
 	conn.commit()
@@ -74,4 +74,11 @@ def addContact(chanel, chanel_input, id):
 	cursor = conn.cursor()
 	sql = "INSERT INTO contactar_por (nombre, identificador) values (%s, %s)"
 	cursor.execute(sql, (chanel, chanel_input))
+	conn.commit()
+
+def addPhoto(path, name, aviso_id):
+	conn = get_conn()
+	cursor = conn.cursor()
+	sql = "INSERT INTO foto (ruta_archivo, nombre_archivo, aviso_id) values (%s, %s, %s)"
+	cursor.execute(sql, (path, name, 2))
 	conn.commit()

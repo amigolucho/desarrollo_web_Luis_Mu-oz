@@ -20,14 +20,18 @@ const validatorPhone = (phone) => {
     return re.test(phone) 
 }
 const validatorChanel = (chanel) => {
-    return chanel.trim().length > 3 && chanel.trim().length <= 50;
+    return true//chanel.trim().length > 3 && chanel.trim().length <= 50;
 }
 /* Validación Mascota */
 const validatorInt = (int) => int && Number.isInteger(Number(int))
 const validadorPhotos = (files) => {
-    if (!files) return false;
-    let lengthValid = 1 <= files.length && files.length <= 5;
-    return lengthValid;
+    if (files.length == 0){
+        return false;
+    }
+    const extension = files[0].name.split(".")[1]
+    const extensionesPermitidas = ["jpg", "jpeg", "png"];
+
+    return files && extensionesPermitidas.includes(extension);
   };
 const validatorDate = (date, min) => {
     return date >= min
@@ -49,7 +53,7 @@ const validarAviso = () => {
     let medida = aviso["medida"].value;
     let date = aviso["deliver"].value;
     let minDate = aviso["deliver"].min;
-    let photos = aviso["photo"].value;
+    let photos = document.getElementById("fotos-container").querySelectorAll("input[type='file']");
     
 
     let invalidInputs = [];
@@ -94,12 +98,16 @@ const validarAviso = () => {
         setInvalidInput("Unidad de medida edad")
     }
     if (!validatorDate(date, minDate)) {
-        setInvalidInput("Fecah de entrega")
+        setInvalidInput("Fecha de entrega")
     }
-    for (photo of photos) {
-        if (!validadorPhotos(photos)) {
-            setInvalidInput("Fotos")
-    }}
+
+    isValid = true;//borrar estoooo
+    for (photo of photos){
+        if (!validadorPhotos(photo.files)){
+            setInvalidInput(photo.name)
+        }
+    }
+
 
     let validationBox = document.getElementById("msg-box");
     let validationList = document.getElementById("msg-list");
@@ -107,13 +115,16 @@ const validarAviso = () => {
 
     let confirmBtn = document.getElementById("confirm-btn");
     let unconfirmBtn = document.getElementById("not-confirm-btn");
+    let addPhotoBtn = document.getElementById("agregar-foto");
     unconfirmBtn.style.backgroundColor = "#f44336";
 
     const confirmAction = () => {
-        validationMsg.innerText  = "Hemos recibido la información de adopción, muchas gracias y suerte!"
-        document.getElementById("home-btn").hidden = false;
+        validationMsg.innerText  = "Hemos recibido la información de adopción, muchas gracias y suerte! Será redirigido automaticamente!"
         confirmBtn.hidden = true;
         unconfirmBtn.hidden = true;
+        setTimeout(() => {
+            aviso.submit();
+        }, 5000);
     }
 
     const unconfirmAction = () => {
@@ -126,6 +137,7 @@ const validarAviso = () => {
         validationMsg.innerText  = "Secciones inválidas";
         validationBox.hidden = true;
         document.getElementById("add-aviso").hidden = false;
+        addPhotoBtn.hidden = false;
     }
 
     confirmBtn.addEventListener("click", confirmAction)
@@ -142,6 +154,7 @@ const validarAviso = () => {
         validationMsg.innerText  = "¿Está seguro que desea agregar este aviso de adopción?";
         confirmBtn.hidden = false;
         unconfirmBtn.hidden = false;
+        addPhotoBtn.hidden = true;
     }else{
         validationBox.hidden = false;
         validationList.innerText = "";
@@ -180,13 +193,13 @@ addPhotoBtn.addEventListener("click", () => {
       contador++;
 
       const label = document.createElement("label");
-      label.setAttribute("for", `foto-${contador}`);
+      label.setAttribute("for", `photo-${contador}`);
       label.textContent = `Foto ${contador}:`;
 
       const input = document.createElement("input");
       input.type = "file";
-      input.id = `foto-${contador}`;
-      input.name = "fotos[]";
+      input.id = `photo-${contador}`;
+      input.name = `Foto ${contador}`;
       input.accept = "image/*";
 
       container.appendChild(document.createElement("br"));

@@ -52,20 +52,30 @@ def agregar_aviso():
     type = request.form.get("type")
     cuantity = request.form.get("cantidad")
     age = request.form.get("age")
-    medida = request.form.get("medida")
+    medida = request.form.get("medida")[0]
     fechaE = request.form.get("deliver")
     desc = request.form.get("description")
     #-------------------------------------------
     chanel = request.form.get("chanel")
-    if chanel != None: 
-        chanel_input = request.form.get("description")
-        db.addContact(chanel, chanel_input, 1)
+    #if chanel != None: 
+     #   chanel_input = request.form.get("description")
+      #  db.addContact(chanel, chanel_input, 1)
     #-------------------------------------------
-    photos = request.form.get("fotos-container")
-    # validar aqui?
+    i = 1
+    while i<=5:
+        photo = request.files.get("Foto " + str(i))
+        if photo == None:
+            break
+        print(photo.filename + "ola")
 
-    db.add_adoption(fechaI, comuna, sector, name, email, phone, type, cuantity, age, medida, fechaE, desc)
-    render_template("tables/index.html")
+        i+=1
+        #photo.save(os.path.join(app.config["UPLOAD_FOLDER"],photo.filename))
+        db.addPhoto(app.config["UPLOAD_FOLDER"], photo.filename,1)
+
+
+    #db.add_adoption(fechaI, comuna, sector, name, email, phone, type, cuantity, age, medida, fechaE, desc)
+    return redirect(url_for("index"))
+
 
 @app.route("/avisos", methods=["GET"])
 def avisos():

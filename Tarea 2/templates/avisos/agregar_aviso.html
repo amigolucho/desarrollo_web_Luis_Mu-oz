@@ -10,7 +10,7 @@
         <ul id="msg-list"></ul>
     </div>
 <div class="formulario">
-    <form id="aviso" method="post" action="{{ url_for('agregar_aviso')}}" enctype="multipart/form-data">
+    <form id="aviso" method="post" action="{{ url_for('agregar_aviso')}}" method="post" enctype="multipart/form-data">
         <h1>Agrega tu aviso!</h1>
         <h2>Lugar</h2>
         <div id="lugar">
@@ -50,7 +50,7 @@
             </select>
             <div id="chanel-input-div" style="display: none; flex-direction: column;">
                 <label>ID o URL</label>
-                <input id="chanel-input" type="text" class="grupo-input">
+                <input id="chanel-input" type="text" class="grupo-input" placeholder="@nombre">
             </div>
 
         </div>
@@ -71,8 +71,8 @@
 
             <label for="medida" class="obligatorio">Unidad de medida edad</label>
             <select name="medida" id="medida" class="grupo-input">
-                <option>Meses</option>
-                <option>Años</option>
+                <option>meses</option>
+                <option>años</option>
             </select>
 
             <label for="deliver" class="obligatorio">Fecha disponible para entrega</label>
@@ -83,7 +83,7 @@
 
             <label for="photo" class="obligatorio">Foto</label>
             <div id="fotos-container" style="display: flex; flex-direction: column;">
-                <input id="photo" type="file" name="photo" class="grupo-input">
+                <input id="photo" type="file" name="Foto 1" accept="image/*" class="grupo-input">
             </div>
         </div>
     </form>
@@ -91,7 +91,7 @@
     <button class="btn" id="add-aviso">Agregar este aviso de adopción</button>
     <button class="btn" id="confirm-btn" hidden>Sí, estoy seguro</button>
     <button class="btn" id="not-confirm-btn" hidden>No, no estoy seguro, quiero volver al formulario</button>
-    <button class="btn" id="home-btn" onclick="window.location.href = '../html/index.html';" hidden>Regresar a la página principal</button>
+    <button class="btn" id="home-btn" onclick="window.location.href = '/';" hidden>Regresar a la página principal</button>
 </div>
 {% endblock %}
 {% block js %}
