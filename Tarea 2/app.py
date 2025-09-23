@@ -16,10 +16,11 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def index():
     avisos = []
     for aviso in db.get_5_adoptions():
-        _, fechaI, comunaId, sector, _, _, _, type, cuantity, age, medida, _, _ = aviso
+        aviso_id, fechaI, comunaId, sector, _, _, _, type, cuantity, age, medida, _, _ = aviso
         
         #Pasar de la info del db a lo que se muestra
         comuna = db.getComuna(comunaId)
+        photo = db.getPhoto(aviso_id)
         if sector == 'None': sector = "No especificado"
         if medida == 'a':
             medida = 'años'
@@ -32,7 +33,8 @@ def index():
             "cantidad": cuantity,
             "tipo": type,
             "edad": age,
-            "medida": medida
+            "medida": medida,
+            "photo": photo
         })
     
     return render_template("tables/index.html", avisos=avisos)
@@ -61,19 +63,18 @@ def agregar_aviso():
      #   chanel_input = request.form.get("description")
       #  db.addContact(chanel, chanel_input, 1)
     #-------------------------------------------
+    db.add_adoption(fechaI, comuna, sector, name, email, phone, type, cuantity, age, medida, fechaE, desc)
+    aviso_id = db.getAvisoId(fechaI, comuna, sector, name, email, phone, type, cuantity, age, medida, fechaE, desc)
     i = 1
     while i<=5:
         photo = request.files.get("Foto " + str(i))
         if photo == None:
-            break
-        print(photo.filename + "ola")
+            break 
 
         i+=1
-        #photo.save(os.path.join(app.config["UPLOAD_FOLDER"],photo.filename))
-        db.addPhoto(app.config["UPLOAD_FOLDER"], photo.filename,1)
+        photo.save(os.path.join(app.config["UPLOAD_FOLDER"],photo.filename))
+        db.addPhoto(app.config["UPLOAD_FOLDER"], photo.filename, aviso_id)
 
-
-    #db.add_adoption(fechaI, comuna, sector, name, email, phone, type, cuantity, age, medida, fechaE, desc)
     return redirect(url_for("index"))
 
 
@@ -81,7 +82,7 @@ def agregar_aviso():
 def avisos():
     avisos = []
     for aviso in db.get_adoptions():
-        _, fechaI, comunaId, sector, _, _, _, type, cuantity, age, medida, _, _ = aviso
+        aviso_id, fechaP, comunaId, sector, contacto, _, _, type, cuantity, age, medida, fechaE, _ = aviso
         
         #Pasar de la info del db a lo que se muestra
         comuna = db.getComuna(comunaId)
@@ -91,17 +92,49 @@ def avisos():
         else:
             medida = 'meses'
         avisos.append({
-            "fecha": fechaI,
+            "fechaP": fechaP,
+            "fechaE": fechaE,
             "comuna": comuna,
             "sector": sector,
             "cantidad": cuantity,
             "tipo": type,
             "edad": age,
-            "medida": medida
+            "medida": medida,
+            "contacto": contacto,
+            "aviso_id": aviso_id,
         })
     
 
     return render_template("avisos/lista_avisos.html", avisos=avisos)
+
+@app.route('/información-aviso/<int:aviso_id>', methods=["GET"])
+def info_aviso(aviso_id):
+
+    aviso_id, fechaP, comunaId, sector, contacto, email, phone, type, cuantity, age, medida, fechaE, _ = db.getAviso(aviso_id)
+    comuna = db.getComuna(comunaId)
+    photo = db.getPhoto(aviso_id)
+    if sector == 'None': sector = "No especificado"
+    if medida == 'a':
+        medida = 'años'
+    else:
+        medida = 'meses'
+    aviso = {
+            "fechaP": fechaP,
+            "fechaE": fechaE,
+            "comuna": comuna,
+            "sector": sector,
+            "cantidad": cuantity,
+            "tipo": type,
+            "edad": age,
+            "medida": medida,
+            "contacto": contacto,
+            "aviso_id": aviso_id,
+            "email": email,
+            "phone": phone,
+            "photo": photo
+        }
+    print(aviso)
+    return render_template("avisos/info_aviso.html", aviso=aviso)
 
 @app.route("/estadisticas", methods=["GET"])
 def estadisticas():

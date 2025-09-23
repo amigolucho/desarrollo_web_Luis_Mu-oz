@@ -10,13 +10,10 @@
             <tr>
                 <td>Fecha de Creación</td><td>Comuna</td><td>Sector</td><td>Cantidad/Tipo/Edad</td><td>Foto</td>
             </tr>
-            <tr>
-                <td>2022-08-17 18:00</td><td>Santiago</td><td>Parque O'higgins</td><td>2 gatos \n 1 mes</td><td><img src="{{ url_for('static', filename='src/gato-1.png')}}" alt="gato-1"></td>
-            </tr>
             {% if avisos %}
             {% for aviso in avisos %}
             <tr>
-                <td>{{aviso.fecha}}</td><td>{{aviso.comuna}}</td><td>{{aviso.sector}}</td><td>{{aviso.cantidad}} {{aviso.tipo}} {{aviso.edad}} {{aviso.medida}}</td><td><img src="{{ url_for('static', filename='src/gato-1.png')}}" alt="gato-1"></td>
+                <td>{{aviso.fecha}}</td><td>{{aviso.comuna}}</td><td>{{aviso.sector}}</td><td>{{aviso.cantidad}} {{aviso.tipo}} {{aviso.edad}} {{aviso.medida}} </td><td><img src="{{ url_for('static', filename='uploads/' ~ aviso.photo) }}" alt="adop"></td>
             </tr>
             {% endfor %}
             {% endif %}

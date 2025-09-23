@@ -20,7 +20,8 @@ const validatorPhone = (phone) => {
     return re.test(phone) 
 }
 const validatorChanel = (chanel) => {
-    return true//chanel.trim().length > 3 && chanel.trim().length <= 50;
+    if (chanel.trim() === "") return true;
+    return chanel.trim().length > 3 && chanel.trim().length <= 50;
 }
 /* Validación Mascota */
 const validatorInt = (int) => int && Number.isInteger(Number(int))

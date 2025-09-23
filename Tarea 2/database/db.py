@@ -28,7 +28,7 @@ def get_conn():
 def get_adoptions():
 	conn = get_conn()
 	cursor = conn.cursor()#foto
-	sql = "SELECT fecha_ingreso, comuna, sector, cantidad, tipo, edad FROM aviso_adopcion"
+	sql = "SELECT * FROM aviso_adopcion"
 	cursor.execute(sql)
 	avisos = cursor.fetchall()
 	return avisos
@@ -56,7 +56,31 @@ def getComuna(comunaId):
   cursor.execute(sql, (comunaId))
   comunaId = cursor.fetchone()
   return comunaId[0] 
-	
+
+def getAvisoId(fechaI, comuna, sector, nombre, mail, phone, type, cuantity, age, medida, fechaE, desc):
+	conn = get_conn()
+	cursor = conn.cursor()
+	sql = "SELECT id FROM aviso_adopcion WHERE fecha_ingreso=%s AND comuna_id=%s AND sector=%s AND nombre=%s AND email=%s AND celular=%s AND tipo=%s AND cantidad=%s AND edad=%s AND unidad_medida=%s AND fecha_entrega=%s AND descripcion=%s;"
+	comuna_id = getComunaId(comuna)
+	cursor.execute(sql, (fechaI, comuna_id, sector, nombre, mail, phone, type, cuantity, age, medida, fechaE, desc))
+	id = cursor.fetchone()
+	return id
+
+def getPhoto(aviso_id):
+	conn = get_conn()
+	cursor = conn.cursor()
+	sql = "SELECT ruta_archivo, nombre_archivo FROM foto WHERE aviso_id=%s"
+	cursor.execute(sql, (aviso_id))
+	_, name  = cursor.fetchone()
+	return name
+
+def getAviso(aviso_id):
+	conn = get_conn()
+	cursor = conn.cursor()
+	sql = "SELECT * FROM aviso_adopcion WHERE id=%s"
+	cursor.execute(sql, (aviso_id))
+	aviso  = cursor.fetchall()
+	return aviso[0]
 
 # -- db-related functions --
 
@@ -80,5 +104,5 @@ def addPhoto(path, name, aviso_id):
 	conn = get_conn()
 	cursor = conn.cursor()
 	sql = "INSERT INTO foto (ruta_archivo, nombre_archivo, aviso_id) values (%s, %s, %s)"
-	cursor.execute(sql, (path, name, 2))
+	cursor.execute(sql, (path, name, aviso_id))
 	conn.commit()
