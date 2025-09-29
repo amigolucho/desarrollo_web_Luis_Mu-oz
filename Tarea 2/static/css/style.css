@@ -125,3 +125,33 @@ td > img {
   transform: translateY(-2px);
   box-shadow: 0 6px 8px rgba(0,0,0,0.15);
 }
+
+.select-btn {
+  width: 100px;
+  margin-bottom: 30px;
+  margin-top: 20px;
+  background-color: #6780dd; 
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 10px 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.select-btn:hover {
+  background-color: #487bb9;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+}
+
+#pagina-info {
+    font-size: 20px;
+    color: rgb(45, 52, 58); 
+    font-family: 'Courier New', Courier, monospace; 
+    margin-left: 10px;
+    margin-right: 10px;
+}

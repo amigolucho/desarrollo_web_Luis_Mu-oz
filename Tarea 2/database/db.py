@@ -27,9 +27,17 @@ def get_conn():
 # -- querys --
 def get_adoptions():
 	conn = get_conn()
-	cursor = conn.cursor()#foto
+	cursor = conn.cursor()
 	sql = "SELECT * FROM aviso_adopcion"
 	cursor.execute(sql)
+	avisos = cursor.fetchall()
+	return avisos
+
+def get_5_any_adoptions():
+	conn = get_conn()
+	cursor = conn.cursor()#foto
+	sql = "SELECT * FROM aviso_adopcion ORDER BY fecha_ingreso DESC LIMIT 5 OFFSET %s;"
+	cursor.execute(sql,0)
 	avisos = cursor.fetchall()
 	return avisos
 
@@ -57,15 +65,6 @@ def getComuna(comunaId):
   comunaId = cursor.fetchone()
   return comunaId[0] 
 
-def getAvisoId(fechaI, comuna, sector, nombre, mail, phone, type, cuantity, age, medida, fechaE, desc):
-	conn = get_conn()
-	cursor = conn.cursor()
-	sql = "SELECT id FROM aviso_adopcion WHERE fecha_ingreso=%s AND comuna_id=%s AND sector=%s AND nombre=%s AND email=%s AND celular=%s AND tipo=%s AND cantidad=%s AND edad=%s AND unidad_medida=%s AND fecha_entrega=%s AND descripcion=%s;"
-	comuna_id = getComunaId(comuna)
-	cursor.execute(sql, (fechaI, comuna_id, sector, nombre, mail, phone, type, cuantity, age, medida, fechaE, desc))
-	id = cursor.fetchone()
-	return id
-
 def getPhoto(aviso_id):
 	conn = get_conn()
 	cursor = conn.cursor()
@@ -87,17 +86,18 @@ def getAviso(aviso_id):
 def add_adoption(fechaI, comuna, sector, nombre, mail, phone, type, cuantity, age, medida, fechaE, desc):
 	conn = get_conn()
 	cursor = conn.cursor()
-	sql = "INSERT INTO aviso_adopcion (fecha_ingreso, comuna_id, sector, nombre, email, celular, tipo, cantidad, edad, unidad_medida, fecha_entrega, descripcion) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
 	comuna_id = getComunaId(comuna)
-	cursor.execute(sql, (fechaI, comuna_id, sector, nombre, mail, phone, type, cuantity, age, medida, fechaE, desc))
+	cursor.execute(QUERY_DICT["add_adoption"], (fechaI, comuna_id, sector, nombre, mail, phone, type, cuantity, age, medida, fechaE, desc))
 	conn.commit()
-	# mensaje verificación?
+	aviso_id = cursor.lastrowid
+	return aviso_id
 
 def addContact(chanel, chanel_input, id):
 	conn = get_conn()
 	cursor = conn.cursor()
-	sql = "INSERT INTO contactar_por (nombre, identificador) values (%s, %s)"
-	cursor.execute(sql, (chanel, chanel_input))
+	sql = "INSERT INTO contactar_por (nombre, identificador, aviso_id) values (%s, %s, %s)"
+	if (chanel != "X"): chanel = chanel.lower()
+	cursor.execute(sql, (chanel, chanel_input, id))
 	conn.commit()
 
 def addPhoto(path, name, aviso_id):

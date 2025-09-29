@@ -17,6 +17,7 @@
         <p>Tipo/Cantidad/Edad: {{aviso.cantidad}} {{aviso.tipo}} {{aviso.edad}} {{aviso.medida}}</p>
         <p>Fecha de Publicación: {{aviso.fechaP}}</p> 
         <p>Fecha de entrega: {{aviso.fechaE}}</p>
+        <p>Descripción: {{aviso.descripcion}}</p>
         <img src="{{ url_for('static', filename='uploads/' ~ aviso.photo) }}" alt="aviso" class="thumbnail" onclick="openModal(this)">
         <button class="btn" id="home-btn" onclick="window.location.href = '/';">Regresar a la página principal</button>
     </div>

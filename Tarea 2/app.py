@@ -1,9 +1,6 @@
-from flask import Flask, request, render_template, redirect, url_for, session
-from utils.validations import validate_login_user, validate_register_user, validate_confession
+from flask import Flask, request, render_template, redirect, url_for
 from database import db
-from werkzeug.utils import secure_filename
-import hashlib
-import filetype
+from datetime import datetime
 import os
 
 UPLOAD_FOLDER = 'static/uploads'
@@ -21,7 +18,7 @@ def index():
         #Pasar de la info del db a lo que se muestra
         comuna = db.getComuna(comunaId)
         photo = db.getPhoto(aviso_id)
-        if sector == 'None': sector = "No especificado"
+        if sector == '': sector = "No especificado"
         if medida == 'a':
             medida = 'años'
         else:
@@ -40,12 +37,11 @@ def index():
     return render_template("tables/index.html", avisos=avisos)
 
 @app.route("/agregar-aviso", methods=["GET", "POST"])
-#poner metodo post para postear el formulario
 def agregar_aviso():
     if request.method == "GET":
         return render_template("avisos/agregar_aviso.html")
     
-    fechaI = "2024-09-10 09:24:28"
+    fechaI = datetime.now()
     comuna = request.form.get("comuna")
     sector = request.form.get("sector")
     name = request.form.get("name")
@@ -57,14 +53,16 @@ def agregar_aviso():
     medida = request.form.get("medida")[0]
     fechaE = request.form.get("deliver")
     desc = request.form.get("description")
+    
+    aviso_id = db.add_adoption(fechaI, comuna, sector, name, email, phone, type, cuantity, age, medida, fechaE, desc)
     #-------------------------------------------
     chanel = request.form.get("chanel")
-    #if chanel != None: 
-     #   chanel_input = request.form.get("description")
-      #  db.addContact(chanel, chanel_input, 1)
+    print(request.form)
+    if chanel != None: 
+        chanel_input = request.form.get("chanel_input")
+        print(chanel_input)
+        db.addContact(chanel, chanel_input, aviso_id)
     #-------------------------------------------
-    db.add_adoption(fechaI, comuna, sector, name, email, phone, type, cuantity, age, medida, fechaE, desc)
-    aviso_id = db.getAvisoId(fechaI, comuna, sector, name, email, phone, type, cuantity, age, medida, fechaE, desc)
     i = 1
     while i<=5:
         photo = request.files.get("Foto " + str(i))
@@ -86,7 +84,9 @@ def avisos():
         
         #Pasar de la info del db a lo que se muestra
         comuna = db.getComuna(comunaId)
-        if sector == 'None': sector = "No especificado"
+        photo = db.getPhoto(aviso_id)
+        if sector == '': 
+            sector = "No especificado"
         if medida == 'a':
             medida = 'años'
         else:
@@ -102,18 +102,21 @@ def avisos():
             "medida": medida,
             "contacto": contacto,
             "aviso_id": aviso_id,
+            "photo": photo
         })
-    
-
+        
     return render_template("avisos/lista_avisos.html", avisos=avisos)
 
 @app.route('/información-aviso/<int:aviso_id>', methods=["GET"])
 def info_aviso(aviso_id):
 
-    aviso_id, fechaP, comunaId, sector, contacto, email, phone, type, cuantity, age, medida, fechaE, _ = db.getAviso(aviso_id)
+    aviso_id, fechaP, comunaId, sector, contacto, email, phone, type, cuantity, age, medida, fechaE, descripcion = db.getAviso(aviso_id)
     comuna = db.getComuna(comunaId)
     photo = db.getPhoto(aviso_id)
-    if sector == 'None': sector = "No especificado"
+    if sector == '': sector = "No especificado"
+    if phone == '': phone = "No especificado"
+    if sector == '': sector = "No especificado"
+    if descripcion == '': descripcion = "Sin descripción"
     if medida == 'a':
         medida = 'años'
     else:
@@ -131,7 +134,8 @@ def info_aviso(aviso_id):
             "aviso_id": aviso_id,
             "email": email,
             "phone": phone,
-            "photo": photo
+            "photo": photo,
+            "descripcion": descripcion
         }
     print(aviso)
     return render_template("avisos/info_aviso.html", aviso=aviso)
