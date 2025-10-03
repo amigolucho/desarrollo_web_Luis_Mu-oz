@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template, redirect, url_for
+from utils.validations import *
 from database import db
 from datetime import datetime
 import os
@@ -40,7 +41,6 @@ def index():
 def agregar_aviso():
     if request.method == "GET":
         return render_template("avisos/agregar_aviso.html")
-    
     fechaI = datetime.now()
     comuna = request.form.get("comuna")
     sector = request.form.get("sector")
@@ -53,25 +53,36 @@ def agregar_aviso():
     medida = request.form.get("medida")[0]
     fechaE = request.form.get("deliver")
     desc = request.form.get("description")
-    
-    aviso_id = db.add_adoption(fechaI, comuna, sector, name, email, phone, type, cuantity, age, medida, fechaE, desc)
-    #-------------------------------------------
-    chanel = request.form.get("chanel")
-    print(request.form)
-    if chanel != None: 
-        chanel_input = request.form.get("chanel_input")
-        print(chanel_input)
-        db.addContact(chanel, chanel_input, aviso_id)
-    #-------------------------------------------
-    i = 1
-    while i<=5:
-        photo = request.files.get("Foto " + str(i))
-        if photo == None:
-            break 
 
-        i+=1
-        photo.save(os.path.join(app.config["UPLOAD_FOLDER"],photo.filename))
-        db.addPhoto(app.config["UPLOAD_FOLDER"], photo.filename, aviso_id)
+    errores = validar_aviso(request.form)
+    print(errores)
+    if errores == []: # no lo agrega hasta que se valide
+
+        aviso_id = db.add_adoption(fechaI, comuna, sector, name, email, phone, type, cuantity, age, medida, fechaE, desc)
+    #-------------------------------------------
+
+        i = 1
+        while i<=5:
+            photo = request.files.get("Foto " + str(i))
+            if photo == None:
+                break 
+
+            i+=1
+            photo.save(os.path.join(app.config["UPLOAD_FOLDER"],photo.filename))
+            db.addPhoto(app.config["UPLOAD_FOLDER"], photo.filename, aviso_id)
+
+        i = 1
+        while i<=5:
+            chanel_input = request.form.get("Canal "+str(i))
+            if chanel_input == "":
+                print(chanel_input)
+                print(i)
+                i+=1
+                continue 
+            i+=1
+            print("guardo canal")
+            chanel = request.form.get("chanel")
+            db.addContact(chanel, chanel_input, aviso_id)
 
     return redirect(url_for("index"))
 

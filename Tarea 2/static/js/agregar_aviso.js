@@ -19,9 +19,12 @@ const validatorPhone = (phone) => {
     let re = /^\+\d{3}\.\d{8}$/;
     return re.test(phone) 
 }
-const validatorChanel = (chanel) => {
-    if (chanel.trim() === "") return true;
+const validatorChanelOptional = (chanel) => {
+    if (chanel.trim() === "") return true; // no es obligatorio
     return chanel.trim().length > 3 && chanel.trim().length <= 50;
+}
+const validatorChanelRequired = (chanel) => {
+    return chanel && chanel.trim().length > 3 && chanel.trim().length <= 50;
 }
 /* Validación Mascota */
 const validatorInt = (int) => int && Number.isInteger(Number(int))
@@ -39,6 +42,7 @@ const validatorDate = (date, min) => {
 }
 
 const validarAviso = () => {
+    console.log("Se esta validando")
     let aviso = document.getElementById("aviso"); // formulario
 
     let region = aviso["region"].value;
@@ -47,15 +51,16 @@ const validarAviso = () => {
     let name = aviso["name"].value;
     let email = aviso["email"].value;
     let phone = aviso["phone"].value;
-    let chanel = aviso["chanel-input"].value;
+    let chanel = aviso["chanel-input-1"].value;
     let type = aviso["type"].value;
     let cantidad = aviso["cantidad"].value;
     let age = aviso["age"].value;
     let medida = aviso["medida"].value;
     let date = aviso["deliver"].value;
     let minDate = aviso["deliver"].min;
+    let chanels = document.getElementById("chanel-input-div").querySelectorAll("input[type='text']");
     let photos = document.getElementById("fotos-container").querySelectorAll("input[type='file']");
-    
+    console.log("obtuvo los elementos")
 
     let invalidInputs = [];
     let isValid = true;
@@ -83,8 +88,15 @@ const validarAviso = () => {
     if (!validatorPhone(phone)) {
         setInvalidInput("Número celular")
     }
-    if (!validatorChanel(chanel)) {
+    if(aviso["chanel"].value != "Elige una opción"){//si se elige
+        if (!validatorChanelRequired(chanel)){ // si o si debe poner un canal
         setInvalidInput("Canal")
+        }   
+    }
+    for (cont of chanels){//si agrego un canal extra lo verifica
+        if (!validatorChanelOptional(cont.value)){ // Ya no es obligatorio
+        setInvalidInput(cont.name)
+        }   
     }
     if (!validadorSelect(type)) {
         setInvalidInput("Tipo")
@@ -101,15 +113,15 @@ const validarAviso = () => {
     if (!validatorDate(date, minDate)) {
         setInvalidInput("Fecha de entrega")
     }
+    console.log("Validó")
 
-    isValid = true;//borrar estoooo
     for (photo of photos){
         if (!validadorPhotos(photo.files)){
             setInvalidInput(photo.name)
         }
     }
-
-
+    //---------------------------------------------------------------
+    console.log("Validó fotos")
     let validationBox = document.getElementById("msg-box");
     let validationList = document.getElementById("msg-list");
     let validationMsg = document.getElementById("msg-val");
@@ -210,3 +222,4 @@ addPhotoBtn.addEventListener("click", () => {
       alert("No puedes agregar más de 5 fotos.");
     }
   });
+
