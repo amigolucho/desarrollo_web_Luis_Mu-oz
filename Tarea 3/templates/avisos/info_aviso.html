@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Información de aviso{% endblock %}
+
+{% block css %}<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/info_aviso.css')}}"/>{% endblock %}
+
+{% block content %}
+    <div class="display-info">
+        <h1>Información del lugar</h1>
+        <p>Comuna: {{aviso.comuna}}</p>
+        <p>Sector: {{aviso.sector}}</p>
+        <h1>Información del contacto</h1>
+        <p>Nombre: {{aviso.contacto}}</p>
+        <p>Celular: {{aviso.phone}}</p>
+        <p>Email: {{aviso.email}}</p>
+        <h1>Información de la(s) mascota(s)</h1>
+        <p>Tipo/Cantidad/Edad: {{aviso.cantidad}} {{aviso.tipo}} {{aviso.edad}} {{aviso.medida}}</p>
+        <p>Fecha de Publicación: {{aviso.fechaP}}</p> 
+        <p>Fecha de entrega: {{aviso.fechaE}}</p>
+        <p>Descripción: {{aviso.descripcion}}</p>
+        <p>{{ aviso.id }}</p>
+        <img src="{{ url_for('static', filename='uploads/' ~ aviso.photo) }}" alt="aviso" class="thumbnail" onclick="openModal(this)">
+        <button class="btn" id="home-btn" onclick="window.location.href = '/';">Regresar a la página principal</button>
+    </div>
+
+    <section class="seccion-comentarios">
+        <h2>Agregar Comentario</h2>
+        <div class="mensaje" id="mensaje" style="display: none;"></div>
+        <form id="form-comentario">
+            <input type="hidden" id="aviso-id" name="aviso_id" value="{{ aviso.id }}">
+            <div class="form-group">
+                <label for="nombre">Nombre *</label>
+                <input 
+                    type="text" 
+                    id="nombre" 
+                    name="nombre" 
+                    minlength="3" 
+                    maxlength="80" 
+                    required
+                >
+                <span class="error" id="error-nombre"></span>
+            </div>
+            <div class="form-group">
+                <label for="comentario">Comentario *</label>
+                <textarea 
+                    id="comentario" 
+                    name="comentario" 
+                    rows="4" 
+                    cols="50" 
+                    minlength="5" 
+                    required
+                ></textarea>
+                <span class="error" id="error-comentario"></span>
+            </div>
+            <button type="submit" id="btn-agregar">Agregar comentario</button>
+        </form>
+    </section>
+<section class="seccion-lista-comentarios">
+    <h2>Comentarios</h2>
+    <div id="comentarios-container">
+        <p class="loading">Cargando comentarios...</p>
+    </div>
+</section>
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="expandedImg" src="a" alt="modal">
+    </div>
+{% endblock %}
+{% block js %}
+<script src="{{ url_for('static', filename='js/info_aviso.js')}}"></script>
+{% endblock %}

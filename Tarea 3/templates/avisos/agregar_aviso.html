@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block title %}Agregar aviso{% endblock %}
+
+{% block css %}<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/agregar_avisos.css')}}"/>{% endblock %}
+
+{% block content %}
+    <div class="msg-box" id="msg-box" hidden>
+        <h2 id="msg-val">Secciones inválidas</h2>
+        <ul id="msg-list"></ul>
+    </div>
+<div class="formulario">
+    <form id="aviso" method="post" action="{{ url_for('agregar_aviso')}}" method="post" enctype="multipart/form-data">
+        <h1>Agrega tu aviso!</h1>
+        <h2>Lugar</h2>
+        <div id="lugar">
+            <label for="region" class="obligatorio">Región</label>
+            <select id="region" name="region">    
+                <option value="">Selecione una región</option>
+            </select>
+            
+            <label for="comuna" class="obligatorio">Comuna</label>
+            <select id="comuna" name="comuna">    
+                <option value="">Selecione una comuna</option>
+            </select>
+            
+            <label for="sector">Sector</label>
+            <input id="sector" type="text" name="sector" class="grupo-input" size="100">
+        </div>
+        <h2>Contacto</h2>
+        <div id="contacto">
+            <label for="name" class="obligatorio">Nombre</label>
+            <input id="name" type="text" name="name" class="grupo-input">
+
+            <label for="email" class="obligatorio">Email</label>
+            <input id="email" type="email" name="email" class="grupo-input">
+
+            <label for="phone">Número de Celular</label>
+            <input id="phone" type="tel" name="phone" class="grupo-input" placeholder="+123.12345678"> 
+
+            <label for="chanel">Contactar por</label>
+            <select name="chanel" id="chanel">
+                <option>Elige una opción</option>
+                <option>Whatsapp</option>
+                <option>Telegram</option>
+                <option>X</option>
+                <option>Instagram</option>
+                <option>Tiktok</option>
+                <option>Otras</option>
+            </select>
+            <div id="chanel-input-div" style="display: none; flex-direction: column;">
+                <label>ID o URL 1</label>
+                <input name="Canal 1" id="chanel-input-1" type="text" class="grupo-input" placeholder="@nombre">
+                <label>ID o URL 2</label>
+                <input name="Canal 2" id="chanel-input-2" type="text" class="grupo-input" placeholder="@nombre">
+                <label>ID o URL 3</label>
+                <input name="Canal 3" id="chanel-input-3" type="text" class="grupo-input" placeholder="@nombre">
+                <label>ID o URL 4</label>
+                <input name="Canal 4" id="chanel-input-4" type="text" class="grupo-input" placeholder="@nombre">
+                <label>ID o URL 5</label>
+                <input name="Canal 5" id="chanel-input-5" type="text" class="grupo-input" placeholder="@nombre">
+            </div>
+
+        </div>
+        <h2>Mascota</h2>
+        <div id="mascota"></div>
+        <div>
+            <label for="type" class="obligatorio">Tipo</label>
+            <select name="type" id="type" class="grupo-input">
+                <option>Perro</option>
+                <option>Gato</option>
+            </select>
+
+            <label for="cantidad" class="obligatorio">Cantidad</label>
+            <input id="cantidad" type="number" name="cantidad" class="grupo-input">
+
+            <label for="age" class="obligatorio">Edad</label>
+            <input id="age" type="number" name="age" class="grupo-input">
+
+            <label for="medida" class="obligatorio">Unidad de medida edad</label>
+            <select name="medida" id="medida" class="grupo-input">
+                <option>meses</option>
+                <option>años</option>
+            </select>
+
+            <label for="deliver" class="obligatorio">Fecha disponible para entrega</label>
+            <input id="deliver" type="datetime-local" name="deliver" class="grupo-input">
+
+            <label for="description">Descripción</label>
+            <textarea id="description" name="description" cols="50" rows="10" class="grupo-input"></textarea>
+
+            <label for="photo" class="obligatorio">Foto</label>
+            <div id="fotos-container" style="display: flex; flex-direction: column;">
+                <input id="photo" type="file" name="Foto 1" accept="image/*" class="grupo-input">
+            </div>
+        </div>
+    </form>
+    <button class="btn" id="agregar-foto" style="background-color: cadetblue; margin-left: 10px; font-size: 10px;">Agregar otra foto</button>
+    <button class="btn" id="add-aviso">Agregar este aviso de adopción</button>
+    <button class="btn" id="confirm-btn" hidden>Sí, estoy seguro</button>
+    <button class="btn" id="not-confirm-btn" hidden>No, no estoy seguro, quiero volver al formulario</button>
+    <button class="btn" id="home-btn" onclick="window.location.href = '/';" hidden>Regresar a la página principal</button>
+</div>
+{% endblock %}
+{% block js %}
+<script src="{{ url_for('static', filename='js/agregar_aviso.js')}}"></script>
+<script src="{{ url_for('static', filename='js/select.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+<script>
+    // prellenado de la fecha
+    let fecha = dayjs().add(3, 'hour');
+    let valor = fecha.format("YYYY-MM-DDTHH:mm");
+    
+    const fecha2 = document.getElementById("deliver");
+    fecha2.value = valor;
+    fecha2.min = valor;
+</script>
+{% endblock %}

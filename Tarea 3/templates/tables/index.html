@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <h1 class="title">Bienvenido a Adopciones.cl</h1>
+    <p style="place-self: center; color:dimgray; font: 1.5em sans-serif;">Un lugar para ti y para ellos</p>
+    <div>
+        <table class="content-table">
+            <tr>
+                <td>Fecha de Creación</td><td>Comuna</td><td>Sector</td><td>Cantidad/Tipo/Edad</td><td>Foto</td>
+            </tr>
+            {% if avisos %}
+            {% for aviso in avisos %}
+            <tr>
+                <td>{{aviso.fecha}}</td><td>{{aviso.comuna}}</td><td>{{aviso.sector}}</td><td>{{aviso.cantidad}} {{aviso.tipo}} {{aviso.edad}} {{aviso.medida}} </td><td><img src="{{ url_for('static', filename='uploads/' ~ aviso.photo) }}" alt="adop"></td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+        </table>
+    </div>
+{% endblock %}
+{% block js %}<script src="{{ url_for('static', filename='js/index.js')}}"></script>{% endblock %}
+</body>
+</html>

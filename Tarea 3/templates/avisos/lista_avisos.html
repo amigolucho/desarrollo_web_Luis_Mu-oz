@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista avisos{% endblock %}
+
+{% block content %}
+    <div>
+        <table class="content-table" id="table-1">
+            <tr>
+                <td>Fecha de Publicación</td><td>Fecha de entrega</td><td>Comuna</td><td>Sector</td><td>Cantidad/Tipo/Edad</td><td>Nombre Contacto</td><td>Total Fotos</td>
+            </tr>
+            {% for aviso in avisos %}
+            <tr class="avisos" onclick="window.location.href='{{ url_for('info_aviso', aviso_id=aviso.aviso_id) }}';">
+                <td>{{aviso.fechaP}}</td><td>{{aviso.fechaE}}</td><td>{{aviso.comuna}}</td><td>{{aviso.sector}}</td><td>{{aviso.cantidad}} {{aviso.tipo}} {{aviso.edad}} {{aviso.medida}}</td><td>{{aviso.contacto}}</td><td><img src="{{ url_for('static', filename='uploads/' ~ aviso.photo) }}" alt="adopt"></td>
+            </tr>
+            {% endfor %}
+        </table>
+        <div style="display: flex; justify-content: center; align-items: center;">
+          <button class="select-btn" onclick="cambiarPagina(-1)">Anterior</button>
+          <span id="pagina-info"></span>
+          <button class="select-btn" onclick="cambiarPagina(1)">Siguiente</button>
+        </div>
+    </div>
+    <div style="display: flex; flex-direction: column;">
+      <button class="btn" id="home-btn" onclick="window.location.href = '/';">Regresar a la página principal</button>
+    </div>
+{% endblock %}
+
+{% block js %}
+<script>
+let pagina = 1;
+let maxPagina = 0;
+const avisos = document.querySelectorAll(".avisos");
+
+function mostrarPagina() {
+  avisos.forEach((a,i) => {
+    a.style.display = "none";
+    if (i < 5 * pagina && 5 * (pagina - 1) <= i ) {
+      a.style.display = "";
+      maxPagina = i
+    }
+  });
+  document.getElementById("pagina-info").textContent = "Página " + pagina;
+}
+
+function cambiarPagina(dir) {
+  pagina += dir;
+  if (maxPagina % 5 != 4 && dir > 0) {
+    pagina -= dir;
+  }
+  if (pagina < 1) pagina = 1;  
+  mostrarPagina();
+}
+
+mostrarPagina();
+</script>
+{% endblock %}

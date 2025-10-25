@@ -1,0 +1,4 @@
+{
+    "get_aviso_id": "SELECT id FROM aviso_adopcion WHERE fecha_ingreso=%s AND comuna_id=%s AND sector=%s AND nombre=%s AND email=%s AND celular=%s AND tipo=%s AND cantidad=%s AND edad=%s AND unidad_medida=%s AND fecha_entrega=%s AND descripcion=%s;",
+    "add_adoption": "INSERT INTO aviso_adopcion (fecha_ingreso, comuna_id, sector, nombre, email, celular, tipo, cantidad, edad, unidad_medida, fecha_entrega, descripcion) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
+}
