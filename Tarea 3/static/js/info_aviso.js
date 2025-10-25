@@ -129,6 +129,7 @@ let mostrarComentarios = (comentarios) => {
   // Crear elementos para cada comentario
   for (let comentario of comentarios) {
     console.log(comentario)
+    console.log(comentario[1])
     let divComentario = document.createElement("div");
     divComentario.className = "comentario";
     
@@ -138,11 +139,11 @@ let mostrarComentarios = (comentarios) => {
     
     let spanAutor = document.createElement("span");
     spanAutor.className = "comentario-autor";
-    spanAutor.innerText = comentario.nombre;
+    spanAutor.innerText = comentario[1];
     
     let spanFecha = document.createElement("span");
     spanFecha.className = "comentario-fecha";
-    spanFecha.innerText = formatearFecha(comentario.fecha);
+    spanFecha.innerText = formatearFecha(comentario[3]);
     
     divHeader.appendChild(spanAutor);
     divHeader.appendChild(spanFecha);
@@ -150,7 +151,7 @@ let mostrarComentarios = (comentarios) => {
     // Texto del comentario
     let divTexto = document.createElement("div");
     divTexto.className = "comentario-texto";
-    divTexto.innerText = comentario.texto;
+    divTexto.innerText = comentario[2];
     
     // Agregar todo al comentario
     divComentario.appendChild(divHeader);
